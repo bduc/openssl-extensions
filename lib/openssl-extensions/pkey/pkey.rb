@@ -21,6 +21,10 @@ module OpenSSLExtensions::PKey::PKey
   def hash
     to_pem.hash
   end
+
+  def key_identifier(digest='SHA1')
+    OpenSSL::Digest.new(digest, self.public_key.to_der ).to_s.scan(/../).join(":").upcase
+  end
 end
 
 OpenSSL::PKey::PKey.send(:include, OpenSSLExtensions::PKey::PKey)
